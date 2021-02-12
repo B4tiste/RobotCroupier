@@ -1,0 +1,3 @@
+Couleur :        Valeur : 1 -> 13
+Carreaux 0   Coeur  1
+Pique     2   Trefle  3
