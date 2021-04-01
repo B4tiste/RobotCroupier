@@ -10,7 +10,7 @@ import os
 import random
 import lib
 
-clear = lambda : os.system('clear')
+clear = lambda : os.system('cls')
 
 clear()
 
@@ -63,9 +63,7 @@ def jeu() :
 	#A changer si on récupère l'input depuis la cam
 	def tirage_carte():
 
-		lib.tournemoteur()
-
-		carte = random.choice(deck)
+		lib		carte = random.choice(deck)
 		
 		deck.remove(carte)
 		
@@ -86,18 +84,12 @@ def jeu() :
 	#Fonction permettant l'affectation d'une carte dans la main d'un joueur
 	#Via id_joueur et la fonction tirage_carte()
 	def distribution(id_joueur ,deck) : 
-
-		lib.tournemoteur()
-
 		liste_joueurs[id_joueur].main.append(tirage_carte())
 		liste_joueurs[id_joueur].main.append(tirage_carte())
 
 	#Fonctions permettant de ne tirer qu'une seule carte
-	#Pour les HIT de chaque joueur et le dealer
+	#Pour les HIT de chaque joueur et le dealer	
 	def tirage_unique(id_joueur):
-
-		lib.tournemoteur()
-
 		liste_joueurs[id_joueur].main.append(tirage_carte())
 
 	#Fonction permettant l'affichage de la main du dealer, avec la deuxème carte cachée
