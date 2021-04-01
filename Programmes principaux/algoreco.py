@@ -9,14 +9,18 @@ orb = cv2.ORB_create(nfeatures=1000)
 images = []
 classNames = []
 myList = os.listdir(path)
+#affiche le nombre d'images dans la base de données
 print('Total Classes Detected', len(myList))
+
+#enleve le .png dans le nom des images
 for cl in myList:
     imgCur = cv2.imread(f'{path}/{cl}', 0)
     images.append(imgCur)
     classNames.append(os.path.splitext(cl)[0])
 print(classNames)
 
-
+#Trouve les descriptors/keypoints des images et les ajoute a desList
+#un descriptor ou keypoints est un element permettant de caractériser une image
 def findDes(images):
     desList = []
     for img in images:
@@ -24,10 +28,12 @@ def findDes(images):
         desList.append(des)
     return desList
 
-
+#compare les keypoints et retourne l'indice de desList correspondant à l'image qui
+#matche le mieux
 def findID(img, desList, thres = 3):
     kp2, des2 = orb.detectAndCompute(img, None)
     bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+    #brute force matcher ==> compare les images en fonctions de leur descriptor
     matchList = []
     finalVal = -1
     try:
