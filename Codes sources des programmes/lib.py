@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+"""
+Librairie Personelle
+
+@author: batis
+"""
+
+import time
+import progressbar
+import os
+from getpass import getpass
+import RPi.GPIO as GPIO
+
+
+def clear(): return os.system('cls')
+
+
+delay = 2
+
+
+def load_bar(t):
+
+    for i in progressbar.progressbar(range(100)):
+        time.sleep(t/100)
+
+
+# Definition des pins GPIO des moteurs
+M1_En = 21
+M1_In1 = 20
+M1_In2 = 16
+
+M2_En = 18
+M2_In1 = 23
+M2_In2 = 24
+
+
+# Creation d'une liste des pins pour chaque moteur pour compacter la suite du code
+Pins = [[M1_En, M1_In1, M1_In2], [M2_En, M2_In1, M2_In2]]
+#Pins = [[M1_En, M1_In1, M1_In2]]
+
+# Setup
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+GPIO.setup(M1_En, GPIO.OUT)
+GPIO.setup(M1_In1, GPIO.OUT)
+GPIO.setup(M1_In2, GPIO.OUT)
+
+GPIO.setup(M2_En, GPIO.OUT)
+GPIO.setup(M2_In1, GPIO.OUT)
+GPIO.setup(M2_In2, GPIO.OUT)
+
+
+# Voir aide dans le tuto
+M1_Vitesse = GPIO.PWM(M1_En, 50)
+M2_Vitesse = GPIO.PWM(M2_En, 50)
+M1_Vitesse.start(100)
+M2_Vitesse.start(100)
+
+
+def sens1(moteurNum):
+    GPIO.output(Pins[moteurNum - 1][1], GPIO.HIGH)
+    GPIO.output(Pins[moteurNum - 1][2], GPIO.LOW)
+    #print("Moteur", moteurNum, "tourne dans le sens 1.")
+
+
+def sens2(moteurNum):
+    GPIO.output(Pins[moteurNum - 1][1], GPIO.LOW)
+    GPIO.output(Pins[moteurNum - 1][2], GPIO.HIGH)
+    #print("Moteur", moteurNum, "tourne dans le sens 2.")
+
+
+def arret(moteurNum):
+    GPIO.output(Pins[moteurNum - 1][1], GPIO.LOW)
+    GPIO.output(Pins[moteurNum - 1][2], GPIO.LOW)
+    #print("Moteur", moteurNum, "arret.")
+
+
+def arretComplet():
+    GPIO.output(Pins[0][1], GPIO.LOW)
+    GPIO.output(Pins[0][2], GPIO.LOW)
+    GPIO.output(Pins[1][1], GPIO.LOW)
+    GPIO.output(Pins[1][2], GPIO.LOW)
+    #print("Moteurs arretes.")
+    arretComplet()
+
+
+# Fonction utilisée par le programme 'blackjack_t.py' pour faire tourner les moteurs
+def tournemoteur():
+
+    print('Distribution')
+    load_bar(0.5)
+
+    sens1(1)
+    time.sleep(0.5)
+    arret(1)
+    time.sleep(0.3)
